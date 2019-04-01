@@ -447,6 +447,7 @@ impl Miner {
         parent_block_id: BlockId,
         chain: &C,
     ) -> Result<(ClosedBlock, Option<H256>), Error> {
+        let begin = Instant::now();
         let (transactions, mut open_block, original_work_hash) = {
             let mem_pool = self.mem_pool.read();
             let mut sealing_work = self.sealing_work.lock();
@@ -473,6 +474,11 @@ impl Miner {
         };
         let mut tx_count: usize = 0;
         let tx_total = transactions.len();
+        const TIMEOUT: Duration = Duration::from_secs(2); // FIXME: Please remove this magic value.
+        if TIMEOUT < begin.elapsed() {
+            cerror!(MINER, "The mempool took {:?}", begin.elapsed());
+        }
+
         let mut invald_tx_users = HashSet::new();
         for tx in transactions {
             let signer_public = tx.signer_public();
@@ -513,6 +519,9 @@ impl Miner {
                     ctrace!(MINER, "Adding transaction {:?} took {:?}", hash, took);
                     tx_count += 1;
                 } // imported ok
+            }
+            if begin.elapsed() > TIMEOUT {
+                break
             }
         }
         cdebug!(MINER, "Pushed {}/{} transactions", tx_count, tx_total);
