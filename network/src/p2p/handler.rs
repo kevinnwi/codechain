@@ -45,8 +45,8 @@ use crate::{FiltersControl, NodeId, RoutingTable, SocketAddr};
 
 pub const MAX_INBOUND_CONNECTIONS: usize = 1000;
 pub const MAX_OUTBOUND_CONNECTIONS: usize = 1000;
-pub const MAX_OUTGOING_CONNECTIONS: usize = 50;
-pub const MAX_INCOMING_CONNECTIONS: usize = 10;
+pub const MAX_OUTGOING_CONNECTIONS: usize = 100;
+pub const MAX_INCOMING_CONNECTIONS: usize = 50;
 
 const ACCEPT: StreamToken = 0;
 
