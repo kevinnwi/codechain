@@ -17,7 +17,7 @@
 use std::env;
 use std::fs;
 use std::path::Path;
-use std::sync::{Arc, Weak};
+use std::sync::{Arc, Optimum};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use ccore::{
