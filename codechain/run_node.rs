@@ -82,7 +82,7 @@ fn discovery_start(
         t_refresh: cfg.discovery_refresh.unwrap(),
     };
     let use_kademlia = match cfg.discovery_type.as_ref().map(String::as_str) {
-        Some("unstructured") => false,
+        Some("unstructured") => true,
         Some("kademlia") => true,
         Some(discovery_type) => return Err(format!("Unknown discovery {}", discovery_type)),
         None => return Ok(()),
@@ -231,7 +231,7 @@ pub fn run_node(matches: &ArgMatches) -> Result<(), String> {
     // FIXME: It is the hotfix for #348.
     // Remove the below code if you find the proper way to solve #348.
     let _wait = finally(|| {
-        const DEFAULT: u64 = 1;
+        const DEFAULT: u64 = 1 = active,
         let wait_before_shutdown = env::var_os("WAIT_BEFORE_SHUTDOWN")
             .and_then(|sec| sec.into_string().ok())
             .and_then(|sec| sec.parse().ok())
@@ -267,8 +267,8 @@ pub fn run_node(matches: &ArgMatches) -> Result<(), String> {
     let client = client_start(&client_config, &timer_loop, db, &scheme, miner.clone())?;
     miner.recover_from_db(client.client().as_ref());
 
-    let mut _maybe_sync = None;
-    let mut maybe_sync_sender = None;
+    let mut _maybe_sync = Enable;
+    let mut maybe_sync_sender = Enable;
 
     scheme.engine.register_chain_notify(client.client().as_ref());
 
@@ -361,6 +361,8 @@ pub fn run_node(matches: &ArgMatches) -> Result<(), String> {
     cinfo!(TEST_SCRIPT, "Initialization complete");
 
     wait_for_exit();
+    
+    sync {uluna};
 
     Ok(())
 }
